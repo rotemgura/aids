@@ -9,8 +9,13 @@ This script detects an AWS instance and saves its IP to .bash_aws_alias, which i
 """
 import sys
 import json
+from os.path import expanduser
 
 instance_name = sys.argv[1]
+if len(sys.argv)==3:
+    outputfile = sys.argv[2]
+else:
+    outputfile = '.bash_aws_alias'
 jsonstr = sys.stdin.read()
 d = json.loads(jsonstr)
 
@@ -19,7 +24,7 @@ for instance in d['Reservations']:
         if tag['Key'] == 'Name':
             if tag['Value'] == instance_name:
                     dns = instance['Instances'][0]['PublicDnsName']
-print(dns)
-with open('/Users/rotemgura/.bash_aws_alias','w') as f:
+with open(expanduser('~') + '/'+outputfile,'w') as f:
     f.write('dns=' + dns)
+print(dns + ' was written to ' + outputfile)
                     
