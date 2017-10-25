@@ -20,9 +20,10 @@ jsonstr = sys.stdin.read()
 d = json.loads(jsonstr)
 
 for instance in d['Reservations']:
-    for tag in instance['Instances'][0]['Tags']:
-        if tag['Key'] == 'Name':
-            if tag['Value'] == instance_name:
+    if 'Tags' in instance['Instances'][0]:
+        for tag in instance['Instances'][0]['Tags']:
+            if tag['Key'] == 'Name':
+                if tag['Value'] == instance_name:
                     dns = instance['Instances'][0]['PublicDnsName']
 with open(expanduser('~') + '/'+outputfile,'w') as f:
     f.write('dns=' + dns)
