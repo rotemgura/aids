@@ -14,7 +14,8 @@ jsonstr = sys.stdin.read()
 d = json.loads(jsonstr)
 
 for instance in d['Reservations']:
-    for tag in instance['Instances'][0]['Tags']:
-        if tag['Key'] == 'Name':
-            if tag['Value'] == instance_name:
-                print(instance['Instances'][0]['InstanceId'])
+    if 'Tags' in instance['Instances'][0]:
+        for tag in instance['Instances'][0]['Tags']:
+            if tag['Key'] == 'Name':
+                if tag['Value'] == instance_name:
+                    print(instance['Instances'][0]['InstanceId'])
